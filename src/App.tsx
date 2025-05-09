@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import Marketplace from "./pages/Marketplace";
 import Rewards from "./pages/Rewards";
 import Staking from "./pages/Staking";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 // Override default Wallet Adapter styles
@@ -34,6 +35,7 @@ const App = () => {
               <Route path="/marketplace" element={<Marketplace />} />
               <Route path="/rewards" element={<Rewards />} />
               <Route path="/staking" element={<Staking />} />
+              <Route path="/analytics" element={<Analytics />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

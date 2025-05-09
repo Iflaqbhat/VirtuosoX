@@ -10,7 +10,18 @@ import {
 } from "@/components/ui/sheet";
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { cn } from '@/lib/utils';
-import { Award, Gift, Menu, Home, LayoutDashboard, Coins, ShoppingBag, X, Star } from 'lucide-react';
+import { 
+  Award, 
+  Gift, 
+  Menu, 
+  Home, 
+  LayoutDashboard, 
+  Coins, 
+  ShoppingBag, 
+  X, 
+  Star, 
+  BarChart3 
+} from 'lucide-react';
 
 const Navigation = () => {
   const location = useLocation();
@@ -32,6 +43,7 @@ const Navigation = () => {
           <NavLink to="/marketplace" currentPath={location.pathname} icon={<ShoppingBag size={18} />}>Marketplace</NavLink>
           <NavLink to="/rewards" currentPath={location.pathname} icon={<Award size={18} />}>Rewards</NavLink>
           <NavLink to="/staking" currentPath={location.pathname} icon={<Coins size={18} />}>Staking</NavLink>
+          <NavLink to="/analytics" currentPath={location.pathname} icon={<BarChart3 size={18} />}>Analytics</NavLink>
         </nav>
         
         <div className="flex items-center gap-4">
@@ -64,6 +76,7 @@ const Navigation = () => {
                 <MobileNavLink to="/marketplace" currentPath={location.pathname} setIsOpen={setIsOpen} icon={<ShoppingBag className="mr-2 h-5 w-5" />}>Marketplace</MobileNavLink>
                 <MobileNavLink to="/rewards" currentPath={location.pathname} setIsOpen={setIsOpen} icon={<Award className="mr-2 h-5 w-5" />}>Rewards</MobileNavLink>
                 <MobileNavLink to="/staking" currentPath={location.pathname} setIsOpen={setIsOpen} icon={<Coins className="mr-2 h-5 w-5" />}>Staking</MobileNavLink>
+                <MobileNavLink to="/analytics" currentPath={location.pathname} setIsOpen={setIsOpen} icon={<BarChart3 className="mr-2 h-5 w-5" />}>Analytics</MobileNavLink>
               </div>
             </SheetContent>
           </Sheet>
