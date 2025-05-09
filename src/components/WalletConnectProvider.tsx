@@ -2,9 +2,12 @@
 import { FC, ReactNode, useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { PhantomWalletAdapter, SolflareWalletAdapter, BackpackWalletAdapter } from '@solana/wallet-adapter-wallets';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
+
+// Import the wallet adapters directly
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
+import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
 
 // Default styles that can be overridden
 import '@solana/wallet-adapter-react-ui/styles.css';
@@ -20,12 +23,11 @@ export const WalletConnectProvider: FC<WalletConnectProviderProps> = ({ children
   // You can also provide a custom RPC endpoint
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-  // @solana/wallet-adapter-wallets includes all the adapters but supports tree shaking and lazy loading
+  // Use specific wallet adapters instead of importing from the combined package
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new BackpackWalletAdapter(),
+      new SolflareWalletAdapter()
     ],
     [network]
   );
