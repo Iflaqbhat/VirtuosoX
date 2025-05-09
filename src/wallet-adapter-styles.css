@@ -1,0 +1,74 @@
+
+/* Custom styles to override Wallet Adapter default styling */
+
+/* Main button */
+.wallet-adapter-button {
+  background-color: hsl(var(--primary)) !important;
+  border-radius: 0.5rem !important;
+  height: 2.5rem !important;
+  padding: 0 1rem !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.wallet-adapter-button:hover {
+  background-color: hsl(var(--primary)/0.9) !important;
+}
+
+.wallet-adapter-button:active {
+  transform: translateY(1px);
+}
+
+/* Dropdown */
+.wallet-adapter-dropdown {
+  display: flex;
+}
+
+/* Modal */
+.wallet-adapter-modal-wrapper {
+  background-color: hsl(var(--background)) !important;
+  border: 1px solid hsl(var(--border)) !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+}
+
+.wallet-adapter-modal-title {
+  color: hsl(var(--foreground)) !important;
+}
+
+.wallet-adapter-modal-button-close {
+  background-color: hsl(var(--muted)) !important;
+}
+
+/* List */
+.wallet-adapter-modal-list {
+  margin: 0 !important;
+}
+
+.wallet-adapter-modal-list li {
+  border-radius: 0.5rem !important;
+}
+
+.wallet-adapter-modal-list-more {
+  color: hsl(var(--primary)) !important;
+}
+
+/* Button */
+.wallet-adapter-modal-button {
+  background-color: hsl(var(--primary)) !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease-in-out !important;
+}
+
+.wallet-adapter-modal-button:hover {
+  background-color: hsl(var(--primary)/0.9) !important;
+}
+
+/* Custom button in our app */
+.wallet-adapter-button-custom {
+  width: 100%;
+  justify-content: center;
+  font-family: inherit;
+}
