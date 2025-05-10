@@ -1,13 +1,16 @@
 
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useToast } from "@/hooks/use-toast";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Award, BadgeCheck, Gift, Star, Trophy } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Award, Badge as BadgeIcon, Gift, Star, Trophy } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { TaskCard } from "@/components/TaskCard";
+import { RewardCard } from "@/components/RewardCard";
+import { ThemeSwitch } from "@/components/ThemeSwitch";
 
 const MOCK_TASKS = [
   {
@@ -136,18 +139,36 @@ const Rewards = () => {
     }
   }, [connected]);
   
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+  
   return (
     <div className="min-h-screen pt-16">
-      <div className="container py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Rewards Center</h1>
-          <p className="text-muted-foreground">
-            Complete tasks and earn exclusive rewards on the VirtuosoX platform
-          </p>
+      <div className="container py-8 animate-fade-in">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold mb-2">Rewards Center</h1>
+            <p className="text-muted-foreground">
+              Complete tasks and earn exclusive rewards on the SolanaVerse platform
+            </p>
+          </div>
+          <ThemeSwitch />
         </div>
         
         {/* Points Summary */}
-        <div className="bg-card-gradient rounded-xl p-6 border border-border/50 mb-8 relative overflow-hidden">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+          className="bg-card-gradient rounded-xl p-6 border border-border/50 mb-8 relative overflow-hidden"
+        >
           <div className="absolute inset-0 bg-hero-gradient opacity-5"></div>
           <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
@@ -177,145 +198,118 @@ const Rewards = () => {
                 </Badge>
                 <p className="text-sm text-muted-foreground">Next level: {nextLevelPoints} points</p>
               </div>
-              <Progress value={progressToNextLevel} max={100} className="h-2 w-full md:w-64" />
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <Progress value={progressToNextLevel} max={100} className="h-2 w-full md:w-64" />
+              </motion.div>
             </div>
           </div>
-        </div>
+        </motion.div>
         
         <div className="grid md:grid-cols-2 gap-8">
           {/* Tasks Section */}
-          <div>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+          >
             <h2 className="text-2xl font-semibold mb-4 flex items-center">
               <Trophy className="mr-2 h-6 w-6 text-primary" />
               Earn Points
             </h2>
             <div className="space-y-4">
-              {MOCK_TASKS.map((task) => {
-                const isCompleted = completedTasks.includes(task.id);
-                
-                return (
-                  <motion.div
-                    key={task.id}
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Card className={cn("border-border/50 transition-all", 
-                      isCompleted ? "bg-accent/10" : ""
-                    )}>
-                      <CardHeader className="pb-2">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            <h3 className="font-semibold">{task.name}</h3>
-                            {isCompleted && (
-                              <BadgeCheck className="h-4 w-4 ml-1 text-primary" />
-                            )}
-                          </div>
-                          <span className="flex items-center text-sm font-medium">
-                            <Star className="h-4 w-4 mr-1 text-primary" />
-                            {task.points} points
-                          </span>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground">{task.description}</p>
-                      </CardContent>
-                      <CardFooter>
-                        <Button 
-                          variant={isCompleted ? "outline" : "default"} 
-                          className={cn("w-full", isCompleted ? "bg-accent/20" : "")}
-                          disabled={!connected || isCompleted}
-                          onClick={() => handleCompleteTask(task.id, task.points)}
-                        >
-                          {isCompleted ? "Completed ✓" : "Complete Task"}
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  </motion.div>
-                );
-              })}
+              <AnimatePresence>
+                {MOCK_TASKS.map((task) => {
+                  const isCompleted = completedTasks.includes(task.id);
+                  
+                  return (
+                    <TaskCard
+                      key={task.id}
+                      task={task}
+                      isCompleted={isCompleted}
+                      onComplete={handleCompleteTask}
+                      connected={connected}
+                    />
+                  );
+                })}
+              </AnimatePresence>
             </div>
-          </div>
+          </motion.div>
           
           {/* Rewards Section */}
-          <div>
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={containerVariants}
+          >
             <h2 className="text-2xl font-semibold mb-4 flex items-center">
               <Gift className="mr-2 h-6 w-6 text-primary" />
               Redeem Rewards
             </h2>
             <div className="space-y-4">
-              {MOCK_REWARDS.map((reward) => {
-                const isRedeemed = claimedRewards.includes(reward.id);
-                const canRedeem = userPoints >= reward.pointsCost && !isRedeemed;
-                
-                return (
-                  <motion.div
-                    key={reward.id}
-                    whileHover={{ y: -2 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Card className={cn("border-border/50", 
-                      isRedeemed ? "bg-accent/10" : ""
-                    )}>
-                      <div className="flex">
-                        <div className="w-24 h-24 overflow-hidden">
-                          <img src={reward.image} alt={reward.name} className="w-full h-full object-cover" />
-                        </div>
-                        <div className="flex-1 p-4">
-                          <div className="flex justify-between items-start">
-                            <h3 className="font-semibold">{reward.name}</h3>
-                            {isRedeemed && (
-                              <Badge className="bg-primary/20 text-primary border-none">
-                                Redeemed
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground my-1">{reward.description}</p>
-                          <div className="flex items-center justify-between mt-2">
-                            <span className="flex items-center text-sm">
-                              <Star className="h-4 w-4 mr-1 text-primary" />
-                              {reward.pointsCost} points
-                            </span>
-                            <Button 
-                              size="sm" 
-                              variant={isRedeemed ? "outline" : "default"}
-                              disabled={!connected || !canRedeem || isRedeemed}
-                              onClick={() => handleRedeemReward(reward.id, reward.pointsCost)}
-                            >
-                              {isRedeemed ? "Claimed" : "Redeem"}
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </Card>
-                  </motion.div>
-                );
-              })}
+              <AnimatePresence>
+                {MOCK_REWARDS.map((reward) => {
+                  const isRedeemed = claimedRewards.includes(reward.id);
+                  const canRedeem = userPoints >= reward.pointsCost && !isRedeemed;
+                  
+                  return (
+                    <RewardCard
+                      key={reward.id}
+                      reward={reward}
+                      isRedeemed={isRedeemed}
+                      canRedeem={canRedeem}
+                      onRedeem={handleRedeemReward}
+                      connected={connected}
+                    />
+                  );
+                })}
+              </AnimatePresence>
               
               {claimedRewards.length > 0 && (
-                <Card className="mt-6 bg-card-gradient">
-                  <CardHeader>
-                    <h3 className="font-semibold flex items-center">
-                      <Award className="mr-2 h-5 w-5 text-primary" />
-                      Your Claimed Rewards
-                    </h3>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      {claimedRewards.map((claimedId) => {
-                        const reward = MOCK_REWARDS.find(r => r.id === claimedId);
-                        return reward ? (
-                          <div key={claimedId} className="flex items-center gap-2">
-                            <BadgeCheck className="h-4 w-4 text-primary" />
-                            <span>{reward.name}</span>
-                          </div>
-                        ) : null;
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Card className="mt-6 bg-card-gradient">
+                    <CardHeader>
+                      <h3 className="font-semibold flex items-center">
+                        <Award className="mr-2 h-5 w-5 text-primary" />
+                        Your Claimed Rewards
+                      </h3>
+                    </CardHeader>
+                    <CardContent>
+                      <motion.div 
+                        className="space-y-2"
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="visible"
+                      >
+                        {claimedRewards.map((claimedId) => {
+                          const reward = MOCK_REWARDS.find(r => r.id === claimedId);
+                          return reward ? (
+                            <motion.div 
+                              key={claimedId} 
+                              className="flex items-center gap-2"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <BadgeIcon className="h-4 w-4 text-primary" />
+                              <span>{reward.name}</span>
+                            </motion.div>
+                          ) : null;
+                        })}
+                      </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               )}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
