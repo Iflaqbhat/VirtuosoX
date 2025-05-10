@@ -1,4 +1,3 @@
-
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { DashboardCard } from '@/components/DashboardCard';
 import { SolanaBalance } from '@/components/SolanaBalance';
 import { TransactionList } from '@/components/TransactionList';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { ArrowRight, Award, Coins, CreditCard, Flame, Image, LineChart, Shield, Star, Wallet } from 'lucide-react';
@@ -35,10 +34,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (!connected) {
       navigate('/');
-      toast({
-        title: "Wallet not connected",
+      toast("Wallet not connected", {
         description: "Please connect your wallet to access the dashboard",
-        variant: "destructive"
       });
     }
   }, [connected, navigate]);
@@ -50,8 +47,7 @@ const Dashboard = () => {
   const truncatedAddress = `${publicKey.toString().slice(0, 6)}...${publicKey.toString().slice(-4)}`;
   
   const refreshData = () => {
-    toast({
-      title: "Dashboard Refreshed",
+    toast("Dashboard Refreshed", {
       description: "Latest data has been loaded",
     });
   };

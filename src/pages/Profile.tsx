@@ -1,4 +1,3 @@
-
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { DashboardCard } from '@/components/DashboardCard';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import {
   Bell,
   Copy,
@@ -58,10 +57,8 @@ const Profile = () => {
   useEffect(() => {
     if (!connected) {
       navigate('/');
-      toast({
-        title: "Wallet not connected",
-        description: "Please connect your wallet to access your profile",
-        variant: "destructive"
+      toast("Wallet not connected", {
+        description: "Please connect your wallet to access your profile"
       });
     }
   }, [connected, navigate]);
@@ -75,24 +72,21 @@ const Profile = () => {
   const handleSaveName = () => {
     setUsername(editedName);
     setIsEditingName(false);
-    toast({
-      title: "Profile Updated",
+    toast("Profile Updated", {
       description: "Your display name has been updated successfully"
     });
   };
   
   const copyAddress = () => {
     navigator.clipboard.writeText(publicKey.toString());
-    toast({
-      title: "Address Copied",
+    toast("Address Copied", {
       description: "Wallet address copied to clipboard"
     });
   };
   
   const handleLogout = async () => {
     await disconnect();
-    toast({
-      title: "Wallet Disconnected",
+    toast("Wallet Disconnected", {
       description: "You have been logged out successfully"
     });
     navigate('/');

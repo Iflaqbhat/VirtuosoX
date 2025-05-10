@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useNavigate } from 'react-router-dom';
@@ -6,7 +5,7 @@ import { DashboardCard } from '@/components/DashboardCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { 
   ArrowLeft, 
@@ -80,10 +79,8 @@ const NFTCollection = () => {
   useEffect(() => {
     if (!connected) {
       navigate('/');
-      toast({
-        title: "Wallet not connected",
-        description: "Please connect your wallet to view your NFTs",
-        variant: "destructive"
+      toast("Wallet not connected", {
+        description: "Please connect your wallet to view your NFTs"
       });
     }
   }, [connected, navigate]);
