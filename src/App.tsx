@@ -22,29 +22,41 @@ import './wallet-adapter-styles.css';
 
 const App = () => {
   // Create a client inside the component to ensure proper React context
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: 1,
+      },
+    },
+  });
   
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
+      <ThemeProvider defaultTheme="system">
         <WalletConnectProvider>
           <TooltipProvider>
+            <Sonner position="top-right" closeButton={true} richColors={true} />
             <Toaster />
-            <Sonner />
+            
             <BrowserRouter>
-              <Navigation />
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/marketplace" element={<Marketplace />} />
-                <Route path="/rewards" element={<Rewards />} />
-                <Route path="/staking" element={<Staking />} />
-                <Route path="/analytics" element={<Analytics />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/nft-collection" element={<NFTCollection />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+              <div className="relative min-h-screen flex flex-col">
+                <Navigation />
+                <main className="flex-1">
+                  <Routes>
+                    <Route path="/" element={<Index />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/marketplace" element={<Marketplace />} />
+                    <Route path="/rewards" element={<Rewards />} />
+                    <Route path="/staking" element={<Staking />} />
+                    <Route path="/analytics" element={<Analytics />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/nft-collection" element={<NFTCollection />} />
+                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+              </div>
             </BrowserRouter>
           </TooltipProvider>
         </WalletConnectProvider>

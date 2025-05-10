@@ -5,7 +5,7 @@
 
 @layer base {
   :root {
-    --background: 240 20% 98%;
+    --background: 240 20% 99%;
     --foreground: 240 10% 3.9%;
 
     --card: 0 0% 100%;
@@ -20,7 +20,7 @@
     --secondary: 195 100% 50%;
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 240 4.8% 92.5%;
+    --muted: 240 4.8% 95%;
     --muted-foreground: 240 3.8% 46.1%;
 
     --accent: 157 100% 51%;
@@ -33,17 +33,17 @@
     --input: 240 5.9% 90%;
     --ring: 270 100% 64%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 240 10% 4%;
     --foreground: 0 0% 98%;
 
-    --card: 240 10% 7.9%;
+    --card: 240 10% 7%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 240 10% 7.9%;
+    --popover: 240 10% 7%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 270 100% 64%;
@@ -73,8 +73,30 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-medium tracking-tight;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/70 dark:bg-black/20 backdrop-blur-md border border-white/10 dark:border-white/5 shadow-glass;
+  }
+  
+  .neon-border {
+    @apply border border-primary/20 shadow-neon;
+  }
+  
+  .hover-card {
+    @apply transition-all duration-300 hover:shadow-soft hover:-translate-y-1;
+  }
+  
+  .shimmer {
+    @apply before:absolute before:inset-0 before:bg-shimmer-gradient before:animate-shimmer before:bg-[length:1000px_100%];
   }
 }
 
@@ -82,6 +104,22 @@
   .solana-text-gradient {
     @apply bg-clip-text text-transparent bg-hero-gradient animate-gradient-shift;
     background-size: 300% 300%;
+  }
+  
+  .glass-effect {
+    @apply bg-glass-gradient backdrop-blur-lg;
+  }
+  
+  .glass-shine {
+    @apply after:absolute after:inset-0 after:bg-glass-shine after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-700;
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .text-pretty {
+    text-wrap: pretty;
   }
 }
 
@@ -95,10 +133,32 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted));
-  border-radius: 999px;
+  @apply bg-muted rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
+  @apply bg-muted-foreground/50;
+}
+
+/* Improved wallet adapter styles */
+.wallet-adapter-button {
+  @apply bg-primary hover:bg-primary/90 text-white font-medium rounded-lg px-4 py-2.5 text-sm transition-colors !important;
+  box-shadow: none !important;
+}
+
+.wallet-adapter-modal-wrapper {
+  @apply bg-background border border-border rounded-xl !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.wallet-adapter-modal-title {
+  @apply text-foreground !important;
+}
+
+.wallet-adapter-modal-list {
+  @apply gap-2 !important;
+}
+
+.wallet-adapter-modal-list li {
+  @apply rounded-lg !important;
 }

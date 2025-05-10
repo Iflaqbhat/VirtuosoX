@@ -86,6 +86,14 @@ export default {
 				'gradient-shift': {
 					'0%, 100%': { backgroundPosition: '0% 50%' },
 					'50%': { backgroundPosition: '100% 50%' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'shimmer': {
+					'0%': { backgroundPosition: '-1000px 0' },
+					'100%': { backgroundPosition: '1000px 0' }
 				}
 			},
 			animation: {
@@ -93,12 +101,25 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.5s ease-out',
 				'pulse-slow': 'pulse-slow 3s infinite',
-				'gradient-shift': 'gradient-shift 10s ease infinite'
+				'gradient-shift': 'gradient-shift 10s ease infinite',
+				'float': 'float 6s ease-in-out infinite',
+				'shimmer': 'shimmer 2s linear infinite'
 			},
 			backgroundImage: {
 				'hero-gradient': 'linear-gradient(135deg, #9945FF 0%, #00C2FF 50%, #14F195 100%)',
 				'card-gradient': 'linear-gradient(to right bottom, rgba(153, 69, 255, 0.05), rgba(0, 194, 255, 0.05))',
-				'card-gradient-hover': 'linear-gradient(to right bottom, rgba(153, 69, 255, 0.1), rgba(0, 194, 255, 0.1))'
+				'card-gradient-hover': 'linear-gradient(to right bottom, rgba(153, 69, 255, 0.1), rgba(0, 194, 255, 0.1))',
+				'shimmer-gradient': 'linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%)',
+				'glass-gradient': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01))',
+				'glass-shine': 'linear-gradient(to right bottom, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 80%)',
+				'purple-gradient': 'linear-gradient(135deg, rgba(153, 69, 255, 0.8) 0%, rgba(153, 69, 255, 0.2) 100%)',
+				'blue-gradient': 'linear-gradient(135deg, rgba(0, 194, 255, 0.8) 0%, rgba(0, 194, 255, 0.2) 100%)',
+				'green-gradient': 'linear-gradient(135deg, rgba(20, 241, 149, 0.8) 0%, rgba(20, 241, 149, 0.2) 100%)',
+			},
+			boxShadow: {
+				'glass': '0 8px 32px rgba(0, 0, 0, 0.05)',
+				'neon': '0 0 15px rgba(153, 69, 255, 0.5)',
+				'soft': '0 10px 30px -15px rgba(0, 0, 0, 0.15)'
 			}
 		}
 	},

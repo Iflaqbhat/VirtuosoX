@@ -1,3 +1,4 @@
+
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -94,161 +95,240 @@ const Profile = () => {
   
   return (
     <div className="min-h-screen pt-16">
-      <div className="container py-8 animate-fade-in">
-        <div className="flex flex-col md:flex-row gap-6">
-          <div className="md:w-1/3">
-            <DashboardCard
-              title="Profile"
-              description="Manage your account settings"
-              icon={<User size={20} />}
-            >
-              <div className="flex flex-col items-center justify-center py-6">
-                <Avatar className="h-24 w-24 mb-4">
-                  <AvatarImage src={`https://api.dicebear.com/7.x/shapes/svg?seed=${truncatedAddress}`} />
-                  <AvatarFallback className="text-xl bg-primary text-primary-foreground">
-                    {username.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                
-                {isEditingName ? (
-                  <div className="flex flex-col items-center gap-2">
-                    <Input
-                      value={editedName}
-                      onChange={(e) => setEditedName(e.target.value)}
-                      className="max-w-[200px] text-center"
-                    />
-                    <div className="flex gap-2">
-                      <Button 
-                        size="sm" 
-                        onClick={handleSaveName}
-                        className="flex gap-1"
-                      >
-                        <Save size={16} /> Save
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline" 
-                        onClick={() => {
-                          setIsEditingName(false);
-                          setEditedName(username);
-                        }}
-                      >
-                        Cancel
-                      </Button>
-                    </div>
+      <div className="container py-12 animate-fade-in">
+        {/* Profile header */}
+        <div className="relative mb-10 pb-6 border-b">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            <Avatar className="h-24 w-24 border-4 border-background shadow-xl">
+              <AvatarImage src={`https://api.dicebear.com/7.x/shapes/svg?seed=${truncatedAddress}`} />
+              <AvatarFallback className="text-xl bg-primary text-primary-foreground">
+                {username.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            
+            <div className="flex flex-col text-center md:text-left">
+              {isEditingName ? (
+                <div className="flex flex-col items-center md:items-start gap-2">
+                  <Input
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    className="max-w-[200px] text-center md:text-left"
+                    autoFocus
+                  />
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm" 
+                      onClick={handleSaveName}
+                      className="flex gap-1"
+                    >
+                      <Save size={16} /> Save
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => {
+                        setIsEditingName(false);
+                        setEditedName(username);
+                      }}
+                    >
+                      Cancel
+                    </Button>
                   </div>
-                ) : (
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h2 className="text-xl font-bold">{username}</h2>
-                      <Button 
-                        size="icon" 
-                        variant="ghost" 
-                        className="h-6 w-6"
-                        onClick={() => setIsEditingName(true)}
-                      >
-                        <Edit2 size={14} />
-                      </Button>
-                    </div>
-                    <Badge variant="outline" className="mb-4">Level {level}</Badge>
-                    <div className="w-full max-w-xs mb-4">
-                      <div className="flex items-center justify-between text-xs mb-1">
-                        <span>XP Progress</span>
-                        <span>{xp}/100 XP</span>
-                      </div>
-                      <Progress value={xp} className="h-2" />
-                    </div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex items-center gap-2 mb-1">
+                    <h1 className="text-2xl md:text-3xl font-bold">{username}</h1>
+                    <Button 
+                      size="icon" 
+                      variant="ghost" 
+                      className="h-7 w-7"
+                      onClick={() => setIsEditingName(true)}
+                    >
+                      <Edit2 size={14} />
+                    </Button>
                   </div>
-                )}
-                
-                <div className="flex items-center gap-2 p-2 bg-muted/40 rounded-md w-full max-w-xs mb-4">
-                  <span className="text-sm font-mono text-muted-foreground flex-1 truncate">
-                    {truncatedAddress}
-                  </span>
-                  <Button size="icon" variant="ghost" onClick={copyAddress} className="h-6 w-6">
-                    <Copy size={14} />
-                  </Button>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <span className="font-mono">{truncatedAddress}</span>
+                    <Button size="icon" variant="ghost" onClick={copyAddress} className="h-6 w-6">
+                      <Copy size={12} />
+                    </Button>
+                  </div>
+                </>
+              )}
+              
+              <div className="flex flex-wrap gap-2 mt-3">
+                <Badge variant="outline" className="bg-primary/5">Level {level}</Badge>
+                <Badge variant="outline" className="bg-accent/5">Early Adopter</Badge>
+                <Badge variant="outline" className="bg-secondary/5">Power User</Badge>
+              </div>
+            </div>
+            
+            <div className="absolute top-0 right-0">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="flex gap-1 text-destructive hover:text-destructive hover:bg-destructive/10" 
+                onClick={handleLogout}
+              >
+                <LogOut size={16} /> Disconnect
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Main content */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Left column */}
+          <div className="md:col-span-1 space-y-6">
+            {/* Status card */}
+            <div className="rounded-xl border bg-card p-6 shadow-sm">
+              <h3 className="text-lg font-medium mb-4">Experience Progress</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between text-sm mb-1.5">
+                    <span>Level {level}</span>
+                    <span>{xp}/100 XP</span>
+                  </div>
+                  <Progress value={xp} className="h-2" />
                 </div>
                 
-                <Button 
-                  variant="destructive" 
-                  size="sm" 
-                  className="flex gap-1" 
-                  onClick={handleLogout}
-                >
-                  <LogOut size={16} /> Disconnect Wallet
+                <div className="pt-4 border-t">
+                  <h4 className="text-sm font-medium mb-3">Recent Achievements</h4>
+                  
+                  <div className="space-y-3">
+                    {achievements.map((achievement, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <achievement.icon size={16} className="text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium">{achievement.title}</p>
+                          <p className="text-xs text-muted-foreground">{achievement.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Quick links */}
+            <div className="rounded-xl border bg-card p-6 shadow-sm">
+              <h3 className="text-lg font-medium mb-4">Quick Links</h3>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <Button variant="outline" className="justify-start" asChild>
+                  <a href="/dashboard">Dashboard</a>
+                </Button>
+                <Button variant="outline" className="justify-start" asChild>
+                  <a href="/nft-collection">NFT Collection</a>
+                </Button>
+                <Button variant="outline" className="justify-start" asChild>
+                  <a href="/rewards">View Rewards</a>
+                </Button>
+                <Button variant="outline" className="justify-start" asChild>
+                  <a href="/staking">Staking</a>
                 </Button>
               </div>
-            </DashboardCard>
+            </div>
           </div>
           
-          <div className="md:w-2/3">
-            <div className="grid gap-6">
-              <DashboardCard
-                title="Account Settings"
-                description="Manage your preferences"
-                icon={<Bell size={20} />}
-              >
-                <div className="space-y-4 py-2">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="notifications">Transaction Notifications</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Receive alerts for your account activity
-                      </p>
-                    </div>
-                    <Switch
-                      id="notifications"
-                      checked={notifications}
-                      onCheckedChange={setNotifications}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label htmlFor="emails">Marketing Emails</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Receive updates about new features and promotions
-                      </p>
-                    </div>
-                    <Switch
-                      id="emails"
-                      checked={marketingEmails}
-                      onCheckedChange={setMarketingEmails}
-                    />
-                  </div>
-                  
-                  <Button className="w-full mt-4">Save Preferences</Button>
-                </div>
-              </DashboardCard>
+          {/* Right column */}
+          <div className="md:col-span-2 space-y-6">
+            {/* Settings card */}
+            <div className="rounded-xl border bg-card p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <Bell className="h-5 w-5 text-muted-foreground" />
+                <h3 className="text-lg font-medium">Notifications & Preferences</h3>
+              </div>
               
-              <DashboardCard
-                title="Achievements"
-                description="Your earned rewards and badges"
-                icon={<Trophy size={20} />}
-              >
-                <div className="divide-y">
-                  {achievements.map((achievement, index) => (
-                    <div key={index} className="flex items-center py-3 first:pt-0 last:pb-0">
-                      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mr-3">
-                        <achievement.icon size={20} className="text-primary" />
-                      </div>
-                      <div>
-                        <h4 className="font-medium">{achievement.title}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {achievement.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="notifications" className="text-base">Transaction Alerts</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Receive notifications for activity on your account
+                    </p>
+                  </div>
+                  <Switch
+                    id="notifications"
+                    checked={notifications}
+                    onCheckedChange={setNotifications}
+                  />
                 </div>
                 
-                <div className="mt-4 text-center">
-                  <Button variant="outline" className="w-full" asChild>
-                    <a href="/rewards">View All Achievements</a>
+                <div className="flex items-center justify-between pt-4 border-t">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="emails" className="text-base">Marketing Communications</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Receive updates about new features and promotions
+                    </p>
+                  </div>
+                  <Switch
+                    id="emails"
+                    checked={marketingEmails}
+                    onCheckedChange={setMarketingEmails}
+                  />
+                </div>
+                
+                <div className="flex items-center justify-between pt-4 border-t">
+                  <div className="space-y-0.5">
+                    <Label htmlFor="privacy" className="text-base">Enhanced Privacy Mode</Label>
+                    <p className="text-sm text-muted-foreground">
+                      Hide your activity from public network explorers
+                    </p>
+                  </div>
+                  <Switch
+                    id="privacy"
+                    checked={false}
+                    onCheckedChange={() => {}}
+                  />
+                </div>
+                
+                <Button className="w-full mt-2">Save Preferences</Button>
+              </div>
+            </div>
+            
+            {/* Security card */}
+            <div className="rounded-xl border bg-card p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <Shield className="h-5 w-5 text-muted-foreground" />
+                <h3 className="text-lg font-medium">Security</h3>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-accent/5 border border-accent/10">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Shield className="h-5 w-5 text-accent" />
+                    <h4 className="font-medium">Wallet Security Status</h4>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-3">
+                    Your wallet connection is secure. Remember to never share your seed phrase with anyone.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                      Secure Connection
+                    </Badge>
+                    <Badge variant="outline" className="bg-green-500/10 text-green-500 border-green-500/20">
+                      Hardware Protection
+                    </Badge>
+                    <Badge variant="outline" className="bg-amber-500/10 text-amber-500 border-amber-500/20">
+                      2FA Recommended
+                    </Badge>
+                  </div>
+                </div>
+                
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <Button variant="outline" className="justify-start">
+                    Set Up 2FA Security
+                  </Button>
+                  <Button variant="outline" className="justify-start">
+                    View Recent Activity
                   </Button>
                 </div>
-              </DashboardCard>
+              </div>
             </div>
           </div>
         </div>
