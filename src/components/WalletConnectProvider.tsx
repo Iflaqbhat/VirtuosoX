@@ -5,9 +5,11 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 import { clusterApiUrl } from '@solana/web3.js';
 
-// Import the wallet adapters directly
-import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
-import { SolflareWalletAdapter } from '@solana/wallet-adapter-solflare';
+// Import wallet adapters from the combined package
+import { 
+  PhantomWalletAdapter,
+  SolflareWalletAdapter 
+} from '@solana/wallet-adapter-wallets';
 
 // Default styles that can be overridden
 import '@solana/wallet-adapter-react-ui/styles.css';
@@ -23,7 +25,7 @@ export const WalletConnectProvider: FC<WalletConnectProviderProps> = ({ children
   // You can also provide a custom RPC endpoint
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
-  // Use specific wallet adapters instead of importing from the combined package
+  // Use the wallet adapters from the combined package
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
