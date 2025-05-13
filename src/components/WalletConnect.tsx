@@ -12,16 +12,22 @@ import {
   CardTitle 
 } from '@/components/ui/card';
 import { Wallet, ArrowRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const WalletConnect = () => {
   const { connected } = useWallet();
   const [animate, setAnimate] = useState(false);
+  const navigate = useNavigate();
   
   useEffect(() => {
     setAnimate(true);
     const timer = setTimeout(() => setAnimate(false), 500);
     return () => clearTimeout(timer);
   }, [connected]);
+  
+  const handleGoToDashboard = () => {
+    navigate('/dashboard');
+  };
   
   return (
     <div className={`transition-all duration-500 ${animate ? 'scale-105' : 'scale-100'}`}>
@@ -63,11 +69,9 @@ const WalletConnect = () => {
         </CardContent>
         {connected && (
           <CardFooter className="flex flex-col">
-            <Button asChild className="w-full">
-              <a href="/dashboard">
-                Go to Dashboard
-                <ArrowRight size={16} className="ml-2" />
-              </a>
+            <Button onClick={handleGoToDashboard} className="w-full">
+              Go to Dashboard
+              <ArrowRight size={16} className="ml-2" />
             </Button>
           </CardFooter>
         )}

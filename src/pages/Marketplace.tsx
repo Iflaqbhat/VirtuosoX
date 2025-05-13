@@ -4,6 +4,9 @@ import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Coins, Image, Search } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const MOCK_NFTS = [
   {
@@ -52,6 +55,50 @@ const MOCK_NFTS = [
 
 const Marketplace = () => {
   const { connected } = useWallet();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredNFTs, setFilteredNFTs] = useState(MOCK_NFTS);
+  const [activeFilter, setActiveFilter] = useState("all");
+  
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+    
+    if (query.trim() === "") {
+      setFilteredNFTs(MOCK_NFTS);
+    } else {
+      const filtered = MOCK_NFTS.filter(
+        nft => 
+          nft.name.toLowerCase().includes(query) || 
+          nft.creator.toLowerCase().includes(query)
+      );
+      setFilteredNFTs(filtered);
+    }
+  };
+  
+  const handleFilter = (filter: string) => {
+    setActiveFilter(filter);
+    let filtered = MOCK_NFTS;
+    
+    if (filter === "trending") {
+      filtered = MOCK_NFTS.filter(nft => nft.price > 2.0);
+    } else if (filter === "new") {
+      filtered = MOCK_NFTS.slice(0, 3);
+    }
+    
+    setFilteredNFTs(filtered);
+  };
+  
+  const handleBuy = (nft: typeof MOCK_NFTS[0]) => {
+    toast.success("Purchase initiated", {
+      description: `You're buying ${nft.name} for ${nft.price} SOL`,
+    });
+  };
+  
+  const clearFilters = () => {
+    setSearchQuery("");
+    setFilteredNFTs(MOCK_NFTS);
+    setActiveFilter("all");
+  };
   
   return (
     <div className="min-h-screen pt-16">
@@ -66,51 +113,82 @@ const Marketplace = () => {
         <div className="flex flex-col md:flex-row justify-between gap-4 mb-8">
           <div className="relative max-w-md w-full">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-            <Input placeholder="Search collections or NFTs..." className="pl-10" />
+            <Input 
+              placeholder="Search collections or NFTs..." 
+              className="pl-10" 
+              value={searchQuery}
+              onChange={handleSearch}
+            />
           </div>
           
           <div className="flex gap-2">
-            <Button variant="outline">Collections</Button>
-            <Button variant="outline">Trending</Button>
-            <Button variant="outline">New</Button>
-            <Button>Create NFT</Button>
+            <Button 
+              variant={activeFilter === "all" ? "default" : "outline"}
+              onClick={() => handleFilter("all")}
+            >
+              All
+            </Button>
+            <Button 
+              variant={activeFilter === "collections" ? "default" : "outline"}
+              onClick={() => handleFilter("collections")}
+            >
+              Collections
+            </Button>
+            <Button 
+              variant={activeFilter === "trending" ? "default" : "outline"}
+              onClick={() => handleFilter("trending")}
+            >
+              Trending
+            </Button>
+            <Button 
+              variant={activeFilter === "new" ? "default" : "outline"}
+              onClick={() => handleFilter("new")}
+            >
+              New
+            </Button>
+            <Button onClick={() => toast.info("Create NFT feature coming soon")}>
+              Create NFT
+            </Button>
           </div>
         </div>
         
-        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {MOCK_NFTS.map((nft) => (
-            <Card key={nft.id} className="overflow-hidden transition-all hover:-translate-y-1 hover:shadow-md border-border/50">
-              <div className="aspect-square relative overflow-hidden">
-                <img src={nft.image} alt={nft.name} className="w-full h-full object-cover" />
-              </div>
-              <CardHeader className="pb-2">
-                <h3 className="font-semibold text-lg">{nft.name}</h3>
-                <p className="text-sm text-muted-foreground">By {nft.creator}</p>
-              </CardHeader>
-              <CardContent className="pb-4">
-                <div className="flex items-center">
-                  <Coins className="h-4 w-4 mr-1 text-primary" />
-                  <span className="font-medium">{nft.price} SOL</span>
-                </div>
-              </CardContent>
-              <CardFooter className="pt-0">
-                <Button className="w-full" disabled={!connected}>
-                  {connected ? 'Buy Now' : 'Connect Wallet to Buy'}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-        
-        {/* Empty state (visible when filter returns no results) */}
-        {false && (
+        {filteredNFTs.length > 0 ? (
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {filteredNFTs.map((nft) => (
+              <Card key={nft.id} className="overflow-hidden transition-all hover:-translate-y-1 hover:shadow-md border-border/50">
+                <AspectRatio ratio={1/1} className="overflow-hidden">
+                  <img src={nft.image} alt={nft.name} className="w-full h-full object-cover" />
+                </AspectRatio>
+                <CardHeader className="pb-2">
+                  <h3 className="font-semibold text-lg">{nft.name}</h3>
+                  <p className="text-sm text-muted-foreground">By {nft.creator}</p>
+                </CardHeader>
+                <CardContent className="pb-4">
+                  <div className="flex items-center">
+                    <Coins className="h-4 w-4 mr-1 text-primary" />
+                    <span className="font-medium">{nft.price} SOL</span>
+                  </div>
+                </CardContent>
+                <CardFooter className="pt-0">
+                  <Button 
+                    className="w-full" 
+                    disabled={!connected}
+                    onClick={() => connected && handleBuy(nft)}
+                  >
+                    {connected ? 'Buy Now' : 'Connect Wallet to Buy'}
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        ) : (
           <div className="text-center py-16">
             <Image className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
             <h3 className="text-lg font-medium mb-2">No NFTs found</h3>
             <p className="text-muted-foreground mb-4">
               Try adjusting your search or filters
             </p>
-            <Button variant="outline">Clear Filters</Button>
+            <Button variant="outline" onClick={clearFilters}>Clear Filters</Button>
           </div>
         )}
       </div>

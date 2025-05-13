@@ -1,13 +1,13 @@
-
 import React from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import WalletConnect from '@/components/WalletConnect';
 import { ArrowRight, CheckCircle2, Coins, Globe, Sparkles, Shield, Zap } from 'lucide-react';
 
 const Index = () => {
   const { connected } = useWallet();
+  const navigate = useNavigate();
   
   return (
     <div className="min-h-screen flex flex-col">
@@ -44,7 +44,7 @@ const Index = () => {
                 </p>
                 
                 <div className="flex flex-wrap gap-4">
-                  <Button asChild size="lg" className="gap-2 h-12 px-8 text-base font-medium shadow-soft">
+                  <Button asChild size="lg" className="gap-2 h-12 px-8 text-base font-medium shadow-soft" onClick={() => connected && navigate('/dashboard')}>
                     <Link to={connected ? "/dashboard" : "#connect"}>
                       {connected ? 'Go to Dashboard' : 'Get Started'} 
                       <ArrowRight className="h-5 w-5" />
