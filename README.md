@@ -1,25 +1,5 @@
-# Welcome to your Lovable project
-
-## Project info
-
-**URL**: https://lovable.dev/projects/df914360-5ad3-4dd3-b3a5-86cc29404c30
-
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/df914360-5ad3-4dd3-b3a5-86cc29404c30) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
+# Welcome to your VirtuosoX project
+#To run this project locally 
 Follow these steps:
 
 ```sh
@@ -61,13 +41,6 @@ This project is built with:
 - Tailwind CSS
 
 ## How can I deploy this project?
+use Netlify or use the vercel for free deployment
 
-Simply open [Lovable](https://lovable.dev/projects/df914360-5ad3-4dd3-b3a5-86cc29404c30) and click on Share -> Publish.
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
