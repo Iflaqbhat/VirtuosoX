@@ -38,6 +38,9 @@ This project is built with:
 - TypeScript
 - React
 - shadcn-ui
+- Anchor
+- Solana
+- BlockChain
 - Tailwind CSS
 
 ## How can I deploy this project?
