@@ -38,9 +38,6 @@ const App = () => {
         <NotificationsProvider>
           <WalletConnectProvider>
             <TooltipProvider>
-              <Sonner position="top-right" closeButton={true} richColors={true} />
-              <Toaster />
-              
               <BrowserRouter>
                 <div className="relative min-h-screen flex flex-col">
                   <Navigation />
@@ -59,6 +56,8 @@ const App = () => {
                     </Routes>
                   </main>
                 </div>
+                <Sonner position="top-right" closeButton={true} richColors={true} />
+                <Toaster />
               </BrowserRouter>
             </TooltipProvider>
           </WalletConnectProvider>
